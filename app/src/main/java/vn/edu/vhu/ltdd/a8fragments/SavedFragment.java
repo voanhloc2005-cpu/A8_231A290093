@@ -1,4 +1,3 @@
-
 package vn.edu.vhu.ltdd.a8fragments;
 
 import android.os.Bundle;

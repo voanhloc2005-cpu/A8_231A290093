@@ -19,33 +19,39 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, new HomeFragment())
-                    .commit();
+            showFragment(new HomeFragment(), false);
+            bottomNavigation.setSelectedItemId(R.id.nav_home);
         }
 
         bottomNavigation.setOnItemSelectedListener(item -> {
-            Fragment fragment;
-
             int id = item.getItemId();
+            Fragment fragment;
 
             if (id == R.id.nav_home) {
                 fragment = new HomeFragment();
             } else if (id == R.id.nav_category) {
-                fragment = new CategoryFragment();
+                fragment = new NewsListFragment();
             } else if (id == R.id.nav_saved) {
                 fragment = new SavedFragment();
             } else {
                 return false;
             }
 
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-
+            showFragment(fragment, false);
             return true;
         });
+    }
+
+    private void showFragment(Fragment fragment, boolean addToBackStack) {
+        androidx.fragment.app.FragmentTransaction transaction =
+                getSupportFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, fragment);
+
+        if (addToBackStack) {
+            transaction.addToBackStack(null);
+        }
+
+        transaction.commit();
     }
 }
